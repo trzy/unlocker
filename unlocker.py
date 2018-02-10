@@ -56,7 +56,7 @@ if sys.version_info < (2, 7):
 # Setup imports depending on whether IronPython or CPython
 if sys.platform == 'win32' \
         or sys.platform == 'cli':
-    from _winreg import *
+    from winreg import *
 
 
 def bytetohex(data):
@@ -304,7 +304,7 @@ def patchbase(name):
     # Entry to search for in GOS table
     # Should work for 12 & 14 of Workstation...
     darwin = b'\x10\x00\x00\x00\x10\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00' \
-             '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+             b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
     # Read file into string variable
     base = f.read()
@@ -322,7 +322,7 @@ def patchbase(name):
         flag = set_bit(flag, 0)
         flag = chr(flag)
         f.seek(offset + 32)
-        f.write(flag)
+        f.write(flag.encode())
         print('GOS Patched flag @: ' + hex(offset))
         offset += 40
 

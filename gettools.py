@@ -30,6 +30,7 @@ import urllib
 try:
     # For Python 3.0 and later
     from urllib.request import urlopen
+    from urllib import request
     from html.parser import HTMLParser
 except ImportError:
     # Fall back to Python 2
@@ -82,7 +83,7 @@ def main():
     # Get the list of Fusion releases
     # And get the last item in the ul/li tags
     response = urlopen(url)
-    html = response.read()
+    html = response.read().decode('utf-8')
     parser = CDSParser()
     parser.feed(html)
     url = url + parser.HTMLDATA[-1] + '/'
@@ -91,14 +92,14 @@ def main():
     # Open the latest release page
     # And build file URL
     response = urlopen(url)
-    html = response.read()
+    html = response.read().decode('utf-8')
     parser.feed(html)
     url = url + parser.HTMLDATA[-1] + '/packages/com.vmware.fusion.tools.darwin.zip.tar'
     parser.clean()
 
     # Download the darwin.iso tgz file
     print('Retrieving Darwin tools from: ' + url)
-    urllib.urlretrieve(url, convertpath(dest + '/tools/com.vmware.fusion.tools.darwin.zip.tar'))
+    urllib.request.urlretrieve(url, convertpath(dest + '/tools/com.vmware.fusion.tools.darwin.zip.tar'))
 
     # Extract the tar to zip
     tar = tarfile.open(convertpath(dest + '/tools/com.vmware.fusion.tools.darwin.zip.tar'), 'r')
@@ -122,7 +123,7 @@ def main():
 
     # Download the darwinPre15.iso tgz file
     print('Retrieving DarwinPre15 tools from: ' + url)
-    urllib.urlretrieve(url, convertpath(dest + '/tools/com.vmware.fusion.tools.darwinPre15.zip.tar'))
+    urllib.request.urlretrieve(url, convertpath(dest + '/tools/com.vmware.fusion.tools.darwinPre15.zip.tar'))
 
     # Extract the tar to zip
     tar = tarfile.open(convertpath(dest + '/tools/com.vmware.fusion.tools.darwinPre15.zip.tar'), 'r')
